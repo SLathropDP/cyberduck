@@ -54,10 +54,10 @@ public class SDSSearchFeature implements Search {
                 final PathAttributes attributes = feature.toAttributes(node);
                 final EnumSet<AbstractPath.Type> type;
                 switch(node.getType()) {
-                    case ROOM:
+                    case "ROOM":
                         type = EnumSet.of(Path.Type.directory, Path.Type.volume);
                         break;
-                    case FOLDER:
+                    case "FOLDER":
                         type = EnumSet.of(Path.Type.directory);
                         break;
                     default:

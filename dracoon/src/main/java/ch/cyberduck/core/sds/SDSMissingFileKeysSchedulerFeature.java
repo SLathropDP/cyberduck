@@ -24,11 +24,11 @@ import ch.cyberduck.core.preferences.PreferencesFactory;
 import ch.cyberduck.core.sds.io.swagger.client.ApiException;
 import ch.cyberduck.core.sds.io.swagger.client.api.NodesApi;
 import ch.cyberduck.core.sds.io.swagger.client.model.FileFileKeys;
+import ch.cyberduck.core.sds.io.swagger.client.model.KeyPairContainer;
 import ch.cyberduck.core.sds.io.swagger.client.model.MissingKeysResponse;
 import ch.cyberduck.core.sds.io.swagger.client.model.UserFileKeySetBatchRequest;
 import ch.cyberduck.core.sds.io.swagger.client.model.UserFileKeySetRequest;
 import ch.cyberduck.core.sds.io.swagger.client.model.UserIdFileIdItem;
-import ch.cyberduck.core.sds.io.swagger.client.model.UserKeyPairContainer;
 import ch.cyberduck.core.sds.io.swagger.client.model.UserUserPublicKey;
 import ch.cyberduck.core.sds.triplecrypt.CryptoExceptionMappingService;
 import ch.cyberduck.core.sds.triplecrypt.TripleCryptConverter;
@@ -75,7 +75,7 @@ public class SDSMissingFileKeysSchedulerFeature extends AbstractSchedulerFeature
                 return processed;
             }
             final UserPrivateKey privateKey = new UserPrivateKey();
-            final UserKeyPairContainer keyPairContainer = session.keyPair();
+            final KeyPairContainer keyPairContainer = session.keyPair();
             privateKey.setPrivateKey(keyPairContainer.getPrivateKeyContainer().getPrivateKey());
             privateKey.setVersion(keyPairContainer.getPrivateKeyContainer().getVersion());
             final UserKeyPair userKeyPair = new UserKeyPair();

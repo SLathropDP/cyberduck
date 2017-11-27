@@ -63,13 +63,13 @@ public class SDSListService implements ListService {
                     final PathAttributes attributes = feature.toAttributes(node);
                     final EnumSet<AbstractPath.Type> type;
                     switch(node.getType()) {
-                        case ROOM:
+                        case "ROOM":
                             type = EnumSet.of(Path.Type.directory, Path.Type.volume);
                             if(node.getIsEncrypted()) {
                                 type.add(Path.Type.vault);
                             }
                             break;
-                        case FOLDER:
+                        case "FOLDER":
                             type = EnumSet.of(Path.Type.directory);
                             if(node.getIsEncrypted()) {
                                 type.add(Path.Type.decrypted);

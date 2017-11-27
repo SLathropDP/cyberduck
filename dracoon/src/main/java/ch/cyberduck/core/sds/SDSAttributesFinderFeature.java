@@ -57,8 +57,8 @@ public class SDSAttributesFinderFeature implements AttributesFinder {
         final PathAttributes attributes = new PathAttributes();
         attributes.setVersionId(String.valueOf(node.getId()));
         attributes.setChecksum(Checksum.parse(node.getHash()));
-        attributes.setCreationDate(node.getCreatedAt().getTime());
-        attributes.setModificationDate(node.getUpdatedAt().getTime());
+        attributes.setCreationDate(node.getCreatedAt().getMillis());
+        attributes.setModificationDate(node.getUpdatedAt().getMillis());
         attributes.setSize(node.getSize());
         attributes.setPermission(this.toPermission(node));
         attributes.setAcl(this.toAcl(node));
@@ -68,8 +68,8 @@ public class SDSAttributesFinderFeature implements AttributesFinder {
     private Permission toPermission(final Node node) {
         final Permission permission = new Permission(Permission.Action.read, Permission.Action.none, Permission.Action.none);
         switch(node.getType()) {
-            case ROOM:
-            case FOLDER:
+            case "ROOM":
+            case "FOLDER":
                 permission.setUser(permission.getUser().or(Permission.Action.execute));
         }
         if(node.getPermissions().getChange()) {

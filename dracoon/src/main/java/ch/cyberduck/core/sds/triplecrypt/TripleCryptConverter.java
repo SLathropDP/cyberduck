@@ -17,9 +17,9 @@ package ch.cyberduck.core.sds.triplecrypt;
 
 import ch.cyberduck.core.sds.io.swagger.client.model.FileKey;
 import ch.cyberduck.core.sds.io.swagger.client.model.FileKeyContainer;
+import ch.cyberduck.core.sds.io.swagger.client.model.KeyPairContainer;
 import ch.cyberduck.core.sds.io.swagger.client.model.PrivateKeyContainer;
 import ch.cyberduck.core.sds.io.swagger.client.model.PublicKeyContainer;
-import ch.cyberduck.core.sds.io.swagger.client.model.UserKeyPairContainer;
 
 import com.dracoon.sdk.crypto.model.EncryptedFileKey;
 import com.dracoon.sdk.crypto.model.PlainFileKey;
@@ -35,8 +35,8 @@ public class TripleCryptConverter {
         return new FileKey().key(k.getKey()).iv(k.getIv()).tag(k.getTag()).version(k.getVersion());
     }
 
-    public static UserKeyPairContainer toSwaggerUserKeyPairContainer(final UserKeyPair pair) {
-        final UserKeyPairContainer container = new UserKeyPairContainer();
+    public static KeyPairContainer toSwaggerKeyPairContainer(final UserKeyPair pair) {
+        final KeyPairContainer container = new KeyPairContainer();
         container.setPrivateKeyContainer(new PrivateKeyContainer().privateKey(pair.getUserPrivateKey().getPrivateKey()).version(pair.getUserPrivateKey().getVersion()));
         container.setPublicKeyContainer(new PublicKeyContainer().publicKey(pair.getUserPublicKey().getPublicKey()).version(pair.getUserPublicKey().getVersion()));
         return container;

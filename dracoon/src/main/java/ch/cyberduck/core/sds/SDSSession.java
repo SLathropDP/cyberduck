@@ -42,9 +42,9 @@ import ch.cyberduck.core.sds.io.swagger.client.JSON;
 import ch.cyberduck.core.sds.io.swagger.client.api.AuthApi;
 import ch.cyberduck.core.sds.io.swagger.client.api.ConfigApi;
 import ch.cyberduck.core.sds.io.swagger.client.api.UserApi;
+import ch.cyberduck.core.sds.io.swagger.client.model.KeyPairContainer;
 import ch.cyberduck.core.sds.io.swagger.client.model.KeyValueEntry;
 import ch.cyberduck.core.sds.io.swagger.client.model.LoginRequest;
-import ch.cyberduck.core.sds.io.swagger.client.model.UserKeyPairContainer;
 import ch.cyberduck.core.sds.provider.HttpComponentsProvider;
 import ch.cyberduck.core.ssl.ThreadLocalHostnameDelegatingTrustManager;
 import ch.cyberduck.core.ssl.X509KeyManager;
@@ -86,7 +86,7 @@ public class SDSSession extends HttpSession<SDSApiClient> {
     private final ExpiringObjectHolder<UserAccountWrapper> userAccount
         = new ExpiringObjectHolder<>(PreferencesFactory.get().getLong("sds.encryption.keys.ttl"));
 
-    private final ExpiringObjectHolder<UserKeyPairContainer> keyPair
+    private final ExpiringObjectHolder<KeyPairContainer> keyPair
         = new ExpiringObjectHolder<>(PreferencesFactory.get().getLong("sds.encryption.keys.ttl"));
 
     private final List<KeyValueEntry> configuration = new ArrayList<>();
@@ -208,7 +208,7 @@ public class SDSSession extends HttpSession<SDSApiClient> {
         return this.userAccount.get();
     }
 
-    public UserKeyPairContainer keyPair() throws BackgroundException {
+    public KeyPairContainer keyPair() throws BackgroundException {
         if(this.keyPair.get() == null) {
             try {
                 keyPair.set(new UserApi(this.getClient()).getUserKeyPair(StringUtils.EMPTY));

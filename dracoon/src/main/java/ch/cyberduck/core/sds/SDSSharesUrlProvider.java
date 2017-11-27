@@ -33,8 +33,8 @@ import ch.cyberduck.core.sds.io.swagger.client.model.CreateDownloadShareRequest;
 import ch.cyberduck.core.sds.io.swagger.client.model.CreateUploadShareRequest;
 import ch.cyberduck.core.sds.io.swagger.client.model.DownloadShare;
 import ch.cyberduck.core.sds.io.swagger.client.model.FileKey;
+import ch.cyberduck.core.sds.io.swagger.client.model.KeyPairContainer;
 import ch.cyberduck.core.sds.io.swagger.client.model.UploadShare;
-import ch.cyberduck.core.sds.io.swagger.client.model.UserKeyPairContainer;
 import ch.cyberduck.core.sds.triplecrypt.CryptoExceptionMappingService;
 import ch.cyberduck.core.sds.triplecrypt.TripleCryptConverter;
 import ch.cyberduck.core.sds.triplecrypt.TripleCryptKeyPair;
@@ -78,7 +78,7 @@ public class SDSSharesUrlProvider implements PromptUrlProvider<CreateDownloadSha
                 // get existing file key associated with the sharing user
                 final FileKey key = new NodesApi(session.getClient()).getUserFileKey(StringUtils.EMPTY, fileid);
                 final UserPrivateKey privateKey = new UserPrivateKey();
-                final UserKeyPairContainer keyPairContainer = session.keyPair();
+                final KeyPairContainer keyPairContainer = session.keyPair();
                 privateKey.setPrivateKey(keyPairContainer.getPrivateKeyContainer().getPrivateKey());
                 privateKey.setVersion(keyPairContainer.getPrivateKeyContainer().getVersion());
                 final UserKeyPair userKeyPair = new UserKeyPair();
@@ -89,7 +89,7 @@ public class SDSSharesUrlProvider implements PromptUrlProvider<CreateDownloadSha
                 final UserKeyPair pair = Crypto.generateUserKeyPair(options.getPassword());
                 final EncryptedFileKey encryptedFileKey = Crypto.encryptFileKey(plainFileKey, pair.getUserPublicKey());
                 options.setPassword(null);
-                options.setKeyPair(TripleCryptConverter.toSwaggerUserKeyPairContainer(pair));
+                options.setKeyPair(TripleCryptConverter.toSwaggerKeyPairContainer(pair));
                 options.setFileKey(TripleCryptConverter.toSwaggerFileKey(encryptedFileKey));
             }
             final DownloadShare share = new SharesApi(session.getClient()).createDownloadShare(StringUtils.EMPTY,
@@ -99,7 +99,7 @@ public class SDSSharesUrlProvider implements PromptUrlProvider<CreateDownloadSha
                 help = MessageFormat.format(LocaleFactory.localizedString("{0} URL"), LocaleFactory.localizedString("Pre-Signed", "S3"));
             }
             else {
-                final Long expiry = share.getExpireAt().getTime();
+                final Long expiry = share.getExpireAt().getMillis();
                 help = MessageFormat.format(LocaleFactory.localizedString("{0} URL"), LocaleFactory.localizedString("Pre-Signed", "S3")) + " (" + MessageFormat.format(LocaleFactory.localizedString("Expires {0}", "S3") + ")",
                     UserDateFormatterFactory.get().getShortFormat(expiry * 1000)
                 );
@@ -134,7 +134,7 @@ public class SDSSharesUrlProvider implements PromptUrlProvider<CreateDownloadSha
                 help = MessageFormat.format(LocaleFactory.localizedString("{0} URL"), LocaleFactory.localizedString("Pre-Signed", "S3"));
             }
             else {
-                final Long expiry = share.getExpireAt().getTime();
+                final Long expiry = share.getExpireAt().getMillis();
                 help = MessageFormat.format(LocaleFactory.localizedString("{0} URL"), LocaleFactory.localizedString("Pre-Signed", "S3")) + " (" + MessageFormat.format(LocaleFactory.localizedString("Expires {0}", "S3") + ")",
                     UserDateFormatterFactory.get().getShortFormat(expiry * 1000)
                 );
